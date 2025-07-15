@@ -13,5 +13,261 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{6d717017-bcc9-428b-9200-9aff9d28e385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\core">
+      <UniqueIdentifier>{51e7f289-2b1d-44bd-9543-fb7d087e600c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\core">
+      <UniqueIdentifier>{8f9ca60f-9f7b-4946-ab24-825e21d171fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\systems">
+      <UniqueIdentifier>{9e678d8a-1584-46d1-b792-cf205491e6e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\model">
+      <UniqueIdentifier>{7ee5f98b-6b73-44dc-bb2a-cc97cbbec115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\app">
+      <UniqueIdentifier>{8d9ead5f-1115-43e5-a4e9-b3e835deafaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\window">
+      <UniqueIdentifier>{e1f46aa9-33bf-406e-8ece-ddf1c0b06218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\camera">
+      <UniqueIdentifier>{c029f52a-af8c-4559-a2ce-e0bcf074cfc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\systems">
+      <UniqueIdentifier>{f6ee49db-6de3-44d6-a695-5c3999641a66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\model">
+      <UniqueIdentifier>{de66c79b-f33e-4d97-8993-5dbe5fb48586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\window">
+      <UniqueIdentifier>{c38b4dda-cf5b-4d17-a494-ba63ee7697b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\camera">
+      <UniqueIdentifier>{8c6f9403-6fef-423c-b42b-e028f2447e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\app">
+      <UniqueIdentifier>{69677eef-9209-4484-8566-a2864120b04e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\components">
+      <UniqueIdentifier>{784495b9-b652-4b34-8d57-f5d492fe9061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{e0034f83-da20-461b-b94e-316feb844303}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\shader.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\pointLight.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\pointLight.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\texture.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\texture.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\particle.comp">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\particle.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\particle.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\simplex_noise.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\camera\Camera.h">
+      <Filter>Fichiers d%27en-tête\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\GameObject.h">
+      <Filter>Fichiers d%27en-tête\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\Model.h">
+      <Filter>Fichiers d%27en-tête\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\window\MovementController.h">
+      <Filter>Fichiers d%27en-tête\window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\window\Window.h">
+      <Filter>Fichiers d%27en-tête\window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\RenderSystem.h">
+      <Filter>Fichiers d%27en-tête\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\PointLightSystem.h">
+      <Filter>Fichiers d%27en-tête\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Utils.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Buffer.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Descriptors.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Device.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\FrameInfo.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Pipeline.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Renderer.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\SwapChain.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\Application.h">
+      <Filter>Fichiers d%27en-tête\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\ColorComponent.h">
+      <Filter>Fichiers d%27en-tête\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\ModelComponent.h">
+      <Filter>Fichiers d%27en-tête\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\PointLightComponent.h">
+      <Filter>Fichiers d%27en-tête\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\TransformComponent.h">
+      <Filter>Fichiers d%27en-tête\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\backends\imgui_impl_vulkan.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\backends\imgui_impl_glfw.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third party\imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Texture.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\EntityComponentSystem.h">
+      <Filter>Fichiers d%27en-tête\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Particle.h">
+      <Filter>Fichiers d%27en-tête\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\ParticleRenderSystem.h">
+      <Filter>Fichiers d%27en-tête\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\ParticleSystemComponent.h">
+      <Filter>Fichiers d%27en-tête\components</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\app\main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\Model.cpp">
+      <Filter>Fichiers sources\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\GameObject.cpp">
+      <Filter>Fichiers sources\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\Application.cpp">
+      <Filter>Fichiers sources\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\Window.cpp">
+      <Filter>Fichiers sources\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\MovementController.cpp">
+      <Filter>Fichiers sources\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\Camera.cpp">
+      <Filter>Fichiers sources\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\PointLightSystem.cpp">
+      <Filter>Fichiers sources\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\RenderSystem.cpp">
+      <Filter>Fichiers sources\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Descriptors.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Buffer.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Device.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\FrameInfo.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Pipeline.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Renderer.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\SwapChain.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third party\imgui\backends\imgui_impl_vulkan.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third party\imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third party\imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third party\imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third party\imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third party\imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third party\imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Texture.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\ParticleRenderSystem.cpp">
+      <Filter>Fichiers sources\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Utils.cpp">
+      <Filter>Fichiers sources\core</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

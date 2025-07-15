@@ -1,0 +1,12 @@
+[submodule "glm"]
+	path = third party/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "tinyobjloader"]
+	path = third party/tinyobjloader
+	url = https://github.com/tinyobjloader/tinyobjloader.git
+[submodule "stb"]
+	path = third party/stb
+	url = https://github.com/nothings/stb.git
+[submodule "imgui"]
+	path = third party/imgui
+	url = https://github.com/ocornut/imgui.git
