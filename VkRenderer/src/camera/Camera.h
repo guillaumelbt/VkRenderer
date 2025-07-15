@@ -1,6 +1,7 @@
 #pragma once
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#define GLM_FORCE_LEFT_HANDED
 #include <glm/glm.hpp>
 
 
@@ -11,9 +12,9 @@ public:
 
     void SetPerspectiveProjection(float _fovy, float _aspect, float _near, float _far);
 
-    void SetViewDirection(glm::vec3 _position, glm::vec3 _direction, glm::vec3 _up = glm::vec3{ 0.f, -1.0f, 0.f });
+    void SetViewDirection(glm::vec3 _position, glm::vec3 _direction, glm::vec3 _up = glm::vec3{ 0.f, 1.0f, 0.f });
 
-    void SetViewTarget(glm::vec3 _position, glm::vec3 _target, glm::vec3 _up = glm::vec3{ 0.f, -1.0f, 0.f });
+    void SetViewTarget(glm::vec3 _position, glm::vec3 _target, glm::vec3 _up = glm::vec3{ 0.f, 1.0f, 0.f });
 
     void SetViewYXZ(glm::vec3 _position, glm::vec3 _rotation);
 

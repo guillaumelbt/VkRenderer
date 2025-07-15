@@ -24,7 +24,7 @@ public:
 
     KeyMappings keys{};
     float moveSpeed{ 3.f };
-    float mouseSensitivity{ 0.002f };
+    float mouseSensitivity{ 0.0015f };
     bool firstMouse{ true };
     float lastMouseX{ 0.0f };
     float lastMouseY{ 0.0f };

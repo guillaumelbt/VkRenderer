@@ -230,10 +230,10 @@ void main() {
     float curlStrength = curlMultiplier * clamp(distanceFromStart / 0.5, 0.1, 1.0);
     vec3 curl = curlNoise(particles[index].position, curlE) * deltaTime * curlStrength;
     
-    vec3 upwardForce = vec3(0, -updraft * deltaTime, 0);
+    vec3 upwardForce = vec3(0, updraft * deltaTime, 0);
     
     float gravity = 0.8; 
-    vec3 gravityForce = vec3(0, gravity * deltaTime, 0);
+    vec3 gravityForce = vec3(0, -gravity * deltaTime, 0);
     
     particles[index].position += curl + upwardForce + gravityForce;
 

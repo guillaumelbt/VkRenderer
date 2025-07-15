@@ -69,14 +69,14 @@ void ParticleRenderSystem::CreateParticleBuffer()
         
         glm::vec3 pos = glm::vec3(
             cos(angle) * radius,
-            height + 1.0f,
+            height - 0.5f,
             sin(angle) * radius + 1.0f
         );
         p.position = pos;
         p.startPos = pos;
         
-        p.velocity = glm::vec3(velDist(gen) * 0.2f, -1.0f + velDist(gen) * 0.3f, velDist(gen) * 0.2f);
-        p.convergenceTarget = glm::vec3(0.0f, -2.0f, 1.0f);
+        p.velocity = glm::vec3(velDist(gen) * 0.2f, 1.0f + velDist(gen) * 0.3f, velDist(gen) * 0.2f);
+        p.convergenceTarget = glm::vec3(0.0f, 3.0f, 1.0f);
         
         float maxLife = lifeDist(gen);
         p.maxLife = maxLife;
@@ -287,10 +287,10 @@ void ParticleRenderSystem::UpdateParticlesWithCompute(float _deltaTime, VkComman
     pushConstants.pad3 = 0.0f;
     pushConstants.emitterRot = glm::vec3(0.0f, 0.0f, 0.0f); 
     pushConstants.pad4 = 0.0f;
-    pushConstants.convergencePoint = glm::vec3(0.0f, -3.0f, 0.0f);
+    pushConstants.convergencePoint = glm::vec3(0.0f, 3.0f, 0.0f);
     pushConstants.convergenceStrength = 1.0f; 
     pushConstants.totalSmokeDistance = 1.5f; 
-    pushConstants.updraft = 0.8f;
+    pushConstants.updraft = 1.2f;
     pushConstants.randSeed = static_cast<float>(std::chrono::high_resolution_clock::now().time_since_epoch().count() % 100000);
     pushConstants._pad5 = 0.0f;
     

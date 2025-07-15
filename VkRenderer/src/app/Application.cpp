@@ -210,9 +210,9 @@ void Application::LoadGameObjects()
      for (int i = 0; i < lightColors.size(); i++)
      {
          Entity light = m_ec.CreateEntity();
-         auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>()) / lightColors.size(), { 0.f, -1.f, 0.f });
+         auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>()) / lightColors.size(), { 0.f, 1.f, 0.f });
          TransformComponent transform{};
-         transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
+         transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, 1.f, -1.f, 1.f));
          m_ec.AddComponent(light, transform);
          m_ec.AddComponent(light, PointLightComponent{ 0.2f });
          m_ec.AddComponent(light, ColorComponent{ lightColors[i] });
@@ -249,9 +249,9 @@ void Application::LoadGameObjects()
     Entity viking = m_ec.CreateEntity();
     m_ec.AddComponent(viking, TransformComponent
     {
-        glm::vec3(0.0f, 0.5f, 0.0f),
+        glm::vec3(0.0f, -0.5f, 0.0f),
         glm::vec3(1.0f, 1.0f, 1.0f),
-        glm::vec3(glm::half_pi<float>(),0.0f , glm::quarter_pi<float>() * 5)
+        glm::vec3(-glm::half_pi<float>(), 0.0f, -glm::quarter_pi<float>() * 5)
     });
     ModelComponent vikingModelComp{model};
     vikingModelComp.textureDescriptorSet = model->GetTextureDescriptorSet();
