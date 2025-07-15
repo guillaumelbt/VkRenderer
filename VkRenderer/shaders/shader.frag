@@ -37,7 +37,7 @@ void main() {
 	for (int i = 0; i < ubo.numLights; i++) {
 		PointLight light = ubo.pointLights[i];
 		vec3 directionToLight = light.position.xyz - fragPosWorld;
-		float attenuation = 1.0 / dot(directionToLight, directionToLight); // distance squared
+		float attenuation = 1.0 / dot(directionToLight, directionToLight);
 		directionToLight = normalize(directionToLight);
 		float cosAngIncidence = max(dot(surfaceNormal, directionToLight), 0);
 		vec3 intensity = light.color.xyz * light.color.w * attenuation;
@@ -47,7 +47,7 @@ void main() {
 		vec3 halfAngle = normalize(directionToLight + viewDirection);
 		float blinnTerm = dot(surfaceNormal, halfAngle);
 		blinnTerm = clamp(blinnTerm, 0, 1);
-		blinnTerm = pow(blinnTerm, 512.0); // higher values -> sharper highlight
+		blinnTerm = pow(blinnTerm, 512.0);
 		specularLight += intensity * blinnTerm;
 	}
 

@@ -41,10 +41,14 @@ Application::Application()
         .SetPoolFlags(VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT)
 		.Build();
 	LoadGameObjects();
+    InitImGUI();
 }
 
 Application::~Application()
 {
+    ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void Application::Run()
@@ -131,6 +135,14 @@ void Application::Run()
     while (!m_window.ShouldClose())
     {
         glfwPollEvents();
+        
+        ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        
+        ShowImGuiWindow();
+        
+        ImGui::Render();
 
         auto newTime = std::chrono::high_resolution_clock::now();
         float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
@@ -173,6 +185,9 @@ void Application::Run()
             renderSystem.RenderGameObjects(frameInfo);
             pointLightSystem.Render(frameInfo);
             particleSystem.Render(frameInfo, particleDescriptorSets[frameIndex]);
+            
+            ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
+            
             m_renderer.EndSwapChainRenderPass(commandBuffer);
             m_renderer.EndFrame();
         }
@@ -250,16 +265,18 @@ void Application::InitImGUI()
 
     ImGui_ImplGlfw_InitForVulkan(m_window.GetWindow(), true);
 
-    ImGui_ImplVulkan_InitInfo info;
+    ImGui_ImplVulkan_InitInfo info{};
+    info.Instance = m_device.GetInstance();
+    info.PhysicalDevice = m_device.GetPhysicalDevice();
+    info.Device = m_device.GetDevice();
+    info.QueueFamily = m_device.FindPhysicalQueueFamilies().graphicsFamily.value();
+    info.Queue = m_device.GetGraphicsQueue();
     info.DescriptorPool = m_globalPool->GetVkDescriptorPool();
     info.RenderPass = m_renderer.GetSwapChainRenderPass();
-    info.Device = m_device.GetDevice();
-    info.PhysicalDevice = m_device.GetPhysicalDevice();
-    info.ImageCount = SwapChain::MAX_FRAMES_IN_FLIGHT;
     info.MinImageCount = SwapChain::MAX_FRAMES_IN_FLIGHT;
-    info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+    info.ImageCount = SwapChain::MAX_FRAMES_IN_FLIGHT;
+    info.MSAASamples = m_renderer.GetMsaaSamples();  
     info.UseDynamicRendering = VK_FALSE;
-    info.DescriptorPoolSize = 0; 
     info.Allocator = nullptr;
     info.CheckVkResultFn = nullptr;
     ImGui_ImplVulkan_Init(&info);
@@ -267,22 +284,31 @@ void Application::InitImGUI()
 
 void Application::ShowImGuiWindow()
 {
-    ImGui::Begin("Vulkan Renderer Debug");
+    ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
+    
+    ImGui::Begin("Vulkan Renderer Debug", nullptr, ImGuiWindowFlags_None);
     
     ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
     ImGui::Text("Entities: %zu", m_ec.GetEntityCount());
     
+    ImGui::Separator();
+    
     if (m_ec.HasComponent<TransformComponent>(m_viewerEntity)) 
     {
         auto& transform = m_ec.GetComponent<TransformComponent>(m_viewerEntity);
-        ImGui::Text("Camera Position: (%.2f, %.2f, %.2f)", 
-            transform.translation.x, transform.translation.y, transform.translation.z);
+        ImGui::Text("Camera Position:");
+        ImGui::Text("  X: %.2f", transform.translation.x);
+        ImGui::Text("  Y: %.2f", transform.translation.y);
+        ImGui::Text("  Z: %.2f", transform.translation.z);
     }
+    
+    ImGui::Separator();
     
     ImGui::Text("Scene Objects:");
     m_ec.ForEach<TransformComponent, ModelComponent>([&](Entity entity, TransformComponent& transform, ModelComponent& model) 
     {
-        ImGui::Text("Entity %u: Model at (%.2f, %.2f, %.2f)", 
+        ImGui::Text("Entity %u: (%.1f, %.1f, %.1f)", 
             entity, transform.translation.x, transform.translation.y, transform.translation.z);
     });
     
