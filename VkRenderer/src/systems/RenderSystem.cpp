@@ -15,6 +15,8 @@ struct SimplePushConstantData
 {
     glm::mat4 modelMatrix{ 1.0f };
     glm::mat4 normalMatrix{ 1.0f };
+    glm::vec3 color{ 1.0f }; // Add color support
+    float _padding{ 0.0f }; // Ensure 16-byte alignment
 };
 
 RenderSystem::RenderSystem(Device& _device, VkRenderPass _renderPass, VkDescriptorSetLayout _globalSetLayout, VkDescriptorSetLayout _textureSetLayout, VkSampleCountFlagBits msaaSamples)
@@ -115,6 +117,7 @@ void RenderSystem::RenderGameObjects(FrameInfo& _frameInfo)
             SimplePushConstantData push{};
             push.modelMatrix = transform.Mat4();
             push.normalMatrix = transform.NormalMatrix();
+            push.color = modelComp.color;
             if (modelComp.textureDescriptorSet != VK_NULL_HANDLE) 
             {
                 m_pipelineTextured->Bind(_frameInfo.commandBuffer);

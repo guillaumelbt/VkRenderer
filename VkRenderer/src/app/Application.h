@@ -11,6 +11,9 @@
 #include "camera/Camera.h"
 #include "core/Descriptors.h"
 #include "systems/EntityComponentSystem.h"
+#include "ui/ImGuiInterface.h"
+#include <vector>
+#include <string>
 
 class Application
 {
@@ -29,16 +32,16 @@ public :
 
 private:
 	void LoadGameObjects();
-	void InitImGUI();
-	void ShowImGuiWindow();
 
 	Window m_window{ WIDTH,HEIGHT,"VkRenderer" };
 	Device m_device{ m_window };
 	Renderer m_renderer { m_window, m_device };
 
-	EntityComponentSystem m_ec;
 	std::unique_ptr<DescriptorPool> m_globalPool{};
+	EntityComponentSystem m_ec;
 	Entity m_viewerEntity;
 	Entity m_particleEntity;
+	
+	std::unique_ptr<ImGuiInterface> m_imguiInterface;
 };
 

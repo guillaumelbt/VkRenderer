@@ -37,6 +37,9 @@
     <Filter Include="Fichiers sources\camera">
       <UniqueIdentifier>{c029f52a-af8c-4559-a2ce-e0bcf074cfc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\ui">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-7890-abcd-ef1234567890}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Fichiers d%27en-tête\systems">
       <UniqueIdentifier>{f6ee49db-6de3-44d6-a695-5c3999641a66}</UniqueIdentifier>
     </Filter>
@@ -48,6 +51,9 @@
     </Filter>
     <Filter Include="Fichiers d%27en-tête\camera">
       <UniqueIdentifier>{8c6f9403-6fef-423c-b42b-e028f2447e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\ui">
+      <UniqueIdentifier>{b2c3d4e5-f6a7-8901-bcde-f23456789012}</UniqueIdentifier>
     </Filter>
     <Filter Include="Fichiers d%27en-tête\app">
       <UniqueIdentifier>{69677eef-9209-4484-8566-a2864120b04e}</UniqueIdentifier>
@@ -186,6 +192,9 @@
     <ClInclude Include="src\systems\ParticleRenderSystem.h">
       <Filter>Fichiers d%27en-tête\systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\ui\ImGuiInterface.h">
+      <Filter>Fichiers d%27en-tête\ui</Filter>
+    </ClInclude>
     <ClInclude Include="src\components\ParticleSystemComponent.h">
       <Filter>Fichiers d%27en-tête\components</Filter>
     </ClInclude>
@@ -265,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="src\systems\ParticleRenderSystem.cpp">
       <Filter>Fichiers sources\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\ImGuiInterface.cpp">
+      <Filter>Fichiers sources\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Utils.cpp">
       <Filter>Fichiers sources\core</Filter>

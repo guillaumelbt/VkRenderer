@@ -1,6 +1,7 @@
 
 #include "app/Application.h"
 #include <cassert>
+#include <string>
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -23,12 +24,11 @@
 #include "components/TransformComponent.h"
 #include "components/ModelComponent.h"
 #include "components/PointLightComponent.h"
-#include "components/ColorComponent.h"
+#include "core/Texture.h"
+#include "core/Descriptors.h"
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_vulkan.h>
-#include "core/Texture.h"
-#include "core/Descriptors.h"
 
 
 Application::Application()
@@ -40,15 +40,19 @@ Application::Application()
         .AddPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, SwapChain::MAX_FRAMES_IN_FLIGHT * 2)
         .SetPoolFlags(VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT)
 		.Build();
+		
 	LoadGameObjects();
-    InitImGUI();
+	
+	m_imguiInterface = std::make_unique<ImGuiInterface>(m_device, m_window, m_renderer, m_ec);
+	m_imguiInterface->SetDescriptorPool(m_globalPool->GetVkDescriptorPool());
+	m_imguiInterface->Initialize();
+	m_imguiInterface->SetViewerEntity(m_viewerEntity);
+	m_imguiInterface->SetParticleEntity(m_particleEntity);
 }
 
 Application::~Application()
 {
-    ImGui_ImplVulkan_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    vkDeviceWaitIdle(m_device.GetDevice());
 }
 
 void Application::Run()
@@ -140,7 +144,7 @@ void Application::Run()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         
-        ShowImGuiWindow();
+        m_imguiInterface->Render();
         
         ImGui::Render();
 
@@ -177,14 +181,22 @@ void Application::Run()
             uboBuffers[frameIndex]->WriteToBuffer(&ubo, sizeof(GlobalUbo));
             uboBuffers[frameIndex]->Flush(VK_WHOLE_SIZE);
 
-            auto& particleTransform = m_ec.GetComponent<TransformComponent>(m_particleEntity);
-            auto& particleComponent = m_ec.GetComponent<ParticleSystemComponent>(m_particleEntity);
-            particleSystem.UpdateParticlesWithCompute(frameTime, commandBuffer, particleComponent, particleTransform);
+            if (m_ec.HasComponent<ParticleSystemComponent>(m_particleEntity) && 
+                m_ec.HasComponent<TransformComponent>(m_particleEntity))
+            {
+                auto& particleTransform = m_ec.GetComponent<TransformComponent>(m_particleEntity);
+                auto& particleComponent = m_ec.GetComponent<ParticleSystemComponent>(m_particleEntity);
+                particleSystem.UpdateParticlesWithCompute(frameTime, commandBuffer, particleComponent, particleTransform);
+            }
 
             m_renderer.BeginSwapChainRenderPass(commandBuffer);
             renderSystem.RenderGameObjects(frameInfo);
             pointLightSystem.Render(frameInfo);
-            particleSystem.Render(frameInfo, particleDescriptorSets[frameIndex]);
+            
+            if (m_ec.HasComponent<ParticleSystemComponent>(m_particleEntity))
+            {
+                particleSystem.Render(frameInfo, particleDescriptorSets[frameIndex]);
+            }
             
             ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
             
@@ -214,8 +226,11 @@ void Application::LoadGameObjects()
          TransformComponent transform{};
          transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, 1.f, -1.f, 1.f));
          m_ec.AddComponent(light, transform);
-         m_ec.AddComponent(light, PointLightComponent{ 0.2f });
-         m_ec.AddComponent(light, ColorComponent{ lightColors[i] });
+         
+         PointLightComponent lightComp{};
+         lightComp.lightIntensity = 0.2f;
+         lightComp.color = lightColors[i];
+         m_ec.AddComponent(light, lightComp);
      }
 
     m_viewerEntity = m_ec.CreateEntity();
@@ -253,64 +268,9 @@ void Application::LoadGameObjects()
         glm::vec3(1.0f, 1.0f, 1.0f),
         glm::vec3(-glm::half_pi<float>(), 0.0f, -glm::quarter_pi<float>() * 5)
     });
-    ModelComponent vikingModelComp{model};
+    ModelComponent vikingModelComp{};
+    vikingModelComp.model = model;
     vikingModelComp.textureDescriptorSet = model->GetTextureDescriptorSet();
+    vikingModelComp.color = glm::vec3(1.0f, 1.0f, 1.0f);
     m_ec.AddComponent(viking, vikingModelComp);
-    m_ec.AddComponent(viking, ColorComponent{glm::vec3(1, 1, 1)});
-}
-
-void Application::InitImGUI()
-{
-    ImGui::CreateContext();
-
-    ImGui_ImplGlfw_InitForVulkan(m_window.GetWindow(), true);
-
-    ImGui_ImplVulkan_InitInfo info{};
-    info.Instance = m_device.GetInstance();
-    info.PhysicalDevice = m_device.GetPhysicalDevice();
-    info.Device = m_device.GetDevice();
-    info.QueueFamily = m_device.FindPhysicalQueueFamilies().graphicsFamily.value();
-    info.Queue = m_device.GetGraphicsQueue();
-    info.DescriptorPool = m_globalPool->GetVkDescriptorPool();
-    info.RenderPass = m_renderer.GetSwapChainRenderPass();
-    info.MinImageCount = SwapChain::MAX_FRAMES_IN_FLIGHT;
-    info.ImageCount = SwapChain::MAX_FRAMES_IN_FLIGHT;
-    info.MSAASamples = m_renderer.GetMsaaSamples();  
-    info.UseDynamicRendering = VK_FALSE;
-    info.Allocator = nullptr;
-    info.CheckVkResultFn = nullptr;
-    ImGui_ImplVulkan_Init(&info);
-}
-
-void Application::ShowImGuiWindow()
-{
-    ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
-    ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
-    
-    ImGui::Begin("Vulkan Renderer Debug", nullptr, ImGuiWindowFlags_None);
-    
-    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-    ImGui::Text("Entities: %zu", m_ec.GetEntityCount());
-    
-    ImGui::Separator();
-    
-    if (m_ec.HasComponent<TransformComponent>(m_viewerEntity)) 
-    {
-        auto& transform = m_ec.GetComponent<TransformComponent>(m_viewerEntity);
-        ImGui::Text("Camera Position:");
-        ImGui::Text("  X: %.2f", transform.translation.x);
-        ImGui::Text("  Y: %.2f", transform.translation.y);
-        ImGui::Text("  Z: %.2f", transform.translation.z);
-    }
-    
-    ImGui::Separator();
-    
-    ImGui::Text("Scene Objects:");
-    m_ec.ForEach<TransformComponent, ModelComponent>([&](Entity entity, TransformComponent& transform, ModelComponent& model) 
-    {
-        ImGui::Text("Entity %u: (%.1f, %.1f, %.1f)", 
-            entity, transform.translation.x, transform.translation.y, transform.translation.z);
-    });
-    
-    ImGui::End();
 }

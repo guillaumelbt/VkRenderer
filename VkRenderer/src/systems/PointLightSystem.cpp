@@ -1,7 +1,6 @@
 #include "systems/PointLightSystem.h"
 #include "components/PointLightComponent.h"
 #include "components/TransformComponent.h"
-#include "components/ColorComponent.h"
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
@@ -78,12 +77,11 @@ void PointLightSystem::Render(FrameInfo& _frameInfo)
 
     if (_frameInfo.ec) {
         _frameInfo.ec->ForEach<PointLightComponent>([&](Entity id, PointLightComponent& light) {
-            if (!_frameInfo.ec->HasComponent<TransformComponent>(id) || !_frameInfo.ec->HasComponent<ColorComponent>(id)) return;
+            if (!_frameInfo.ec->HasComponent<TransformComponent>(id)) return;
             auto& transform = _frameInfo.ec->GetComponent<TransformComponent>(id);
-            auto& color = _frameInfo.ec->GetComponent<ColorComponent>(id);
             PointLightPushConstants push{};
             push.position = glm::vec4(transform.translation, 1.f);
-            push.color = glm::vec4(color.color, light.lightIntensity);
+            push.color = glm::vec4(light.color, light.lightIntensity);
             push.radius = 0.1f; 
             vkCmdPushConstants(_frameInfo.commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(PointLightPushConstants), &push);
             vkCmdDraw(_frameInfo.commandBuffer, 6, 1, 0, 0);
@@ -109,13 +107,12 @@ void PointLightSystem::Update(FrameInfo& _frameInfo, GlobalUbo& _ubo)
 
     if (_frameInfo.ec) {
         _frameInfo.ec->ForEach<PointLightComponent>([&](Entity id, PointLightComponent& light) {
-            if (!_frameInfo.ec->HasComponent<TransformComponent>(id) || !_frameInfo.ec->HasComponent<ColorComponent>(id)) return;
+            if (!_frameInfo.ec->HasComponent<TransformComponent>(id)) return;
             auto& transform = _frameInfo.ec->GetComponent<TransformComponent>(id);
-            auto& color = _frameInfo.ec->GetComponent<ColorComponent>(id);
             assert(lightIndex < MAX_LIGHTS && "Point lights exceed maximum specified");
             transform.translation = glm::vec3(rotateLight * glm::vec4(transform.translation, 1.f));
             _ubo.pointLights[lightIndex].position = glm::vec4(transform.translation, 1.f);
-            _ubo.pointLights[lightIndex].color = glm::vec4(color.color, light.lightIntensity);
+            _ubo.pointLights[lightIndex].color = glm::vec4(light.color, light.lightIntensity);
             lightIndex += 1;
         });
     }
